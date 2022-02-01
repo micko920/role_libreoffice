@@ -1,0 +1,6 @@
+---
+libreoffice_user: "libreoffice"
+libreoffice_group: "libreoffice"
+libreoffice_state: started
+libreoffice_enabled_at_boot: true
+

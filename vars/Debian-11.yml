@@ -1,0 +1,67 @@
+---
+__libreoffice_version: "7.1"
+__libreoffice_dest: "/opt/libreoffice{{ __libreoffice_version }}"
+__libreoffice_url: "https://downloadarchive.documentfoundation.org/libreoffice/old/7.1.4.2/deb/x86_64/LibreOffice_7.1.4.2_Linux_x86-64_deb.tar.gz"
+__libreoffice_bin_path: "{{ __libreoffice_dest }}/program"
+__libreoffice_config_path: "/etc/libreoffice"
+__libreoffice_packages:
+  - libcairo2
+  - libice6
+  - libpixman-1-0
+  - libsm6
+  - libx11-6
+  - libx11-data
+  - libx11-xcb1
+  - libxau6
+  - libxcb-render0
+  - libxcb-shm0
+  - libxcb1
+  - libxdmcp6
+  - libxext6
+  - libxinerama1
+  - libxrender1
+  - x11-common
+
+__libreoffice_deb_files:
+  - libobasis7.1-base_7.1.4.2-2_amd64.deb
+  - libobasis7.1-calc_7.1.4.2-2_amd64.deb
+  - libobasis7.1-core_7.1.4.2-2_amd64.deb
+  - libobasis7.1-draw_7.1.4.2-2_amd64.deb
+  - libobasis7.1-en-us_7.1.4.2-2_amd64.deb
+  - libobasis7.1-extension-beanshell-script-provider_7.1.4.2-2_amd64.deb
+  - libobasis7.1-extension-javascript-script-provider_7.1.4.2-2_amd64.deb
+  - libobasis7.1-extension-mediawiki-publisher_7.1.4.2-2_amd64.deb
+  - libobasis7.1-extension-nlpsolver_7.1.4.2-2_amd64.deb
+  - libobasis7.1-extension-pdf-import_7.1.4.2-2_amd64.deb
+  - libobasis7.1-extension-report-builder_7.1.4.2-2_amd64.deb
+  - libobasis7.1-firebird_7.1.4.2-2_amd64.deb
+  - libobasis7.1-gnome-integration_7.1.4.2-2_amd64.deb
+  - libobasis7.1-graphicfilter_7.1.4.2-2_amd64.deb
+  - libobasis7.1-images_7.1.4.2-2_amd64.deb
+  - libobasis7.1-impress_7.1.4.2-2_amd64.deb
+  - libobasis7.1-kde-integration_7.1.4.2-2_amd64.deb
+  - libobasis7.1-librelogo_7.1.4.2-2_amd64.deb
+  - libobasis7.1-libreofficekit-data_7.1.4.2-2_amd64.deb
+  - libobasis7.1-math_7.1.4.2-2_amd64.deb
+  - libobasis7.1-ogltrans_7.1.4.2-2_amd64.deb
+  - libobasis7.1-onlineupdate_7.1.4.2-2_amd64.deb
+  - libobasis7.1-ooofonts_7.1.4.2-2_amd64.deb
+  - libobasis7.1-ooolinguistic_7.1.4.2-2_amd64.deb
+  - libobasis7.1-postgresql-sdbc_7.1.4.2-2_amd64.deb
+  - libobasis7.1-python-script-provider_7.1.4.2-2_amd64.deb
+  - libobasis7.1-pyuno_7.1.4.2-2_amd64.deb
+  - libobasis7.1-writer_7.1.4.2-2_amd64.deb
+  - libobasis7.1-xsltfilter_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-base_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-calc_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-debian-menus_7.1.4-2_all.deb
+  - libreoffice7.1-dict-en_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-dict-es_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-dict-fr_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-draw_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-en-us_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-impress_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-math_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-ure_7.1.4.2-2_amd64.deb
+  - libreoffice7.1-writer_7.1.4.2-2_amd64.deb
+  - libreoffice7.1_7.1.4.2-2_amd64.deb

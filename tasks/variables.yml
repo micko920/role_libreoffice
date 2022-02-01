@@ -1,0 +1,44 @@
+---
+# Variable configuration.
+- name: Check os and version
+  debug:
+    msg: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}"
+
+- name: Include OS-specific variables (Debian).
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_os_family == 'Debian'
+
+- name: Define libreoffice_packages.
+  set_fact:
+    libreoffice_packages: "{{ __libreoffice_packages | list }}"
+  when: libreoffice_packages is not defined
+
+- name: Define libreoffice_deb_files.
+  set_fact:
+    libreoffice_deb_files: "{{ __libreoffice_deb_files | list }}"
+  when: libreoffice_deb_files is not defined
+
+- name: Define libreoffice_version.
+  set_fact:
+    libreoffice_version: "{{ __libreoffice_version }}"
+  when: libreoffice_version is not defined
+
+- name: Define libreoffice_dest
+  set_fact:
+    libreoffice_dest: "{{ __libreoffice_dest }}"
+  when: libreoffice_dest is not defined
+
+- name: Define libreoffice_url
+  set_fact:
+    libreoffice_url: "{{ __libreoffice_url }}"
+  when: libreoffice_url is not defined
+
+- name: Define libreoffice_bin_path.
+  set_fact:
+    libreoffice_bin_path: "{{ __libreoffice_bin_path }}"
+  when: libreoffice_bin_path is not defined
+
+- name: Define libreoffice_config_path.
+  set_fact:
+    libreoffice_config_path: "{{ __libreoffice_config_path }}"
+  when: libreoffice_config_path is not defined

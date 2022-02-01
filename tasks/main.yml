@@ -1,0 +1,128 @@
+---
+- include_tasks: is_systemd.yml
+
+# Variable configuration.
+- include_tasks: variables.yml
+
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - gzip
+      - tar
+      - curl
+    state: present
+
+- name: Ensure libreoffice packages are installed.
+  apt:
+    name: "{{ libreoffice_packages }}"
+    state: present
+
+- name: Add the libreoffice group
+  group:
+    name: "{{ libreoffice_group }}"
+    state: present
+
+- name: Add the libreoffice user
+  user:
+    name: "{{ libreoffice_user }}"
+    password_lock: true
+    shell: /bin/bash
+    append: true
+
+- name: Check to see if already installed
+  stat:
+    path: "{{ libreoffice_dest }}"
+  register: stat_libreoffice_dest
+
+- name: Set new install flag
+  set_fact:
+    new_libreoffice_dest: true
+  when:
+    - stat_libreoffice_dest.stat.exists is defined
+    - not stat_libreoffice_dest.stat.exists
+
+- name: Ensure dest exists
+  file:
+    path: "{{ libreoffice_dest }}"
+    owner: "{{ libreoffice_user }}"
+    group: "{{ libreoffice_group }}"
+    state: directory
+    mode: 0700
+    recurse: true
+  when: new_libreoffice_dest is defined
+
+
+    #    src: "{{ libreoffice_url }}"
+- name: Get the libreoffice Bundle
+  unarchive:
+    src: "LibreOffice_7.1.4_Linux_x86-64_deb.tar.gz"
+    remote_src: false
+    dest: "{{ libreoffice_dest }}"
+    owner: "{{ libreoffice_user }}"
+    group: "{{ libreoffice_group }}"
+    mode: 0755
+  register: install_libreoffice
+  until: install_libreoffice is succeeded
+  retries: 3
+  when: new_libreoffice_dest is defined
+
+# - name: Install deb files from tar ball
+#   apt:
+#     deb: "{{ libreoffice_dest }}/LibreOffice_7.1.4.2_Linux_x86-64_deb/DEBS/{{ item }}"
+#   loop: "{{ libreoffice_deb_files }}"
+
+- name: Install deb files from tar ball
+  command:
+    chdir: "{{ libreoffice_dest }}/LibreOffice_7.1.4.2_Linux_x86-64_deb/DEBS"
+    argv: "{{ [ 'dpkg', '-Ei' ] + libreoffice_deb_files }}"
+  register: dpkg_result
+  changed_when: "'Unpacking' in dpkg_result.stdout"
+
+- name: create libreoffice service instance
+  import_role:
+    name: micko920.role_createservice
+  vars:
+    service_list:
+      - name: "libreoffice"
+        description: "Start/Stop LibreOffice server for libreoffice"
+        start_command: "/opt/libreoffice7.1/program/soffice.bin '--accept=socket,host=localhost,port=8100;urp;' --headless --nofirststartwizard --nologo"
+        type: "simple"
+        user_name: "{{ libreoffice_user }}"
+        group_name: "{{ libreoffice_group }}"
+        after: "syslog.target network.target"
+        requires: "network-online.target"
+        extra_values:
+          Restart: "always"
+          KillSignal: "SIGQUIT"
+          StandardError: "syslog"
+  when: systemd_pid_1 is defined and systemd_pid_1
+
+
+# First run looks for a user environment and then if not found exits with code
+# 81. It will not do this again. Success is either a timeout (124) or exit code
+# (81)
+- name: Run soffice once to clear exit code 81 issue
+  command:
+    argv:
+      - "timeout"
+      - "2"
+      - "/opt/libreoffice7.1/program/soffice.bin"
+      - "--accept=socket,host=localhost,port=8100;urp;"
+      - "--headless"
+      - "--nofirststartwizard"
+      - "--nologo"
+  register: soffice_result
+  changed_when: false
+  failed_when:
+    - soffice_result.rc != 81
+    - soffice_result.rc != 124
+
+
+# The first time soffice is run it may exit with a warning '81' which is to do
+# with missing the template path. It will not does this again.
+- name: Configure the libreoffice service.
+  systemd:
+    name: libreoffice
+    state: "{{ libreoffice_state }}"
+    enabled: "{{ libreoffice_enabled_at_boot }}"
+  when: systemd_pid_1 is defined and systemd_pid_1
