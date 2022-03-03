@@ -2,10 +2,10 @@
 # Variable configuration.
 - name: Check os and version
   debug:
-    msg: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}"
+    msg: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('-')[0].split('.')[0] }}"
 
 - name: Include OS-specific variables (Debian).
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('-')[0].split('.')[0] }}.yml"
   when: ansible_os_family == 'Debian'
 
 - name: Define libreoffice_packages.
