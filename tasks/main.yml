@@ -55,7 +55,7 @@
     #    src: "{{ libreoffice_url }}"
 - name: Get the libreoffice Bundle
   unarchive:
-    src: "LibreOffice_7.1.4_Linux_x86-64_deb.tar.gz"
+    src: "LibreOffice_7.1.4.2_Linux_x86-64_deb.tar.gz"
     remote_src: false
     dest: "{{ libreoffice_dest }}"
     owner: "{{ libreoffice_user }}"
