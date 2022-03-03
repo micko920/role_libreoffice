@@ -53,19 +53,30 @@
   when: new_libreoffice_dest is defined
 
 
+- name: Get the libreoffice Bundle
+  get_url:
+    src: "{{ libreoffice_url }}"
+    dest: "{{ libreoffice_dest }}"
+    owner: "{{ libreoffice_user }}"
+    group: "{{ libreoffice_group }}"
+    mode: u=xrw,g=xr,o=xr
+  register: install_libreoffice
+  until: install_libreoffice is succeeded
+  retries: 3
+  when: new_libreoffice_dest is defined
+
     #    src: "{{ libreoffice_url }}"
 - name: Get the libreoffice Bundle
   unarchive:
-    src: "LibreOffice_7.1.4.2_Linux_x86-64_deb.tar.gz"
+    src: "{{ libreoffice_dest }}/LibreOffice_7.1.4.2_Linux_x86-64_deb.tar.gz"
     remote_src: false
     dest: "{{ libreoffice_dest }}"
     owner: "{{ libreoffice_user }}"
     group: "{{ libreoffice_group }}"
     mode: 0755
-  register: install_libreoffice
-  until: install_libreoffice is succeeded
-  retries: 3
-  when: new_libreoffice_dest is defined
+    when:
+      - new_libreoffice_dest is defined
+      - install_libreoffice is succeeded
 
 # - name: Install deb files from tar ball
 #   apt:
